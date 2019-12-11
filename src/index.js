@@ -1,10 +1,11 @@
 import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import '@/fns/index';
-// import App from '@/app';
+import '@/styles/utils';
+import '@/styles/styles';
 
-// ReactDOM.render(<App />, document.getElementById("app"));
+import App from '@/app';
+
+ReactDOM.render(<App />, document.getElementById("app"));
