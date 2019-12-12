@@ -1,60 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-import CardHighlight from '@/components/ui/card/highlight';
-import CardSubInfo from '@/components/ui/card/sub-info';
-import Progress from '@/components/ui/progress';
-import Img from '@/components/ui/img';
-
-import imgChart from '@/images/chart.png';
+import MenuItem from '@/components/logical/menu/item';
 
 const Menu = ({}) => {
 	
 	return (
 		<div className='menu'>
 			{items.map(item => (
-				<div
-					key={'menu-item-'+item.id}
-				>
-					<div 
-						className={`
-							menu-item 
-							${item.highlighed ? 'bg-green' : ''}
-							${item.subMenuOpen ? 'open-sub-menu' : ''}
-						`}
-					>
-						<div>
-							{item.icon}
-							{item.text}
-						</div>
-						<div>
-							{item.badge ? (
-								<div 
-									className={`
-										badge 
-										${item.badgeColor ? 'bg-'+item.badgeColor : ''} 
-										${item.badgeTextColor ? 'color-'+item.badgeTextColor : ''}
-									`}
-								>
-									{item.badge}
-								</div>
-							) : null}
-							{item.subMenu ? (
-								item.subMenuOpen ? <i className='fas fa-chevron-down'></i> :
-								<i className='fas fa-chevron-left'></i>
-							) : null}
-						</div>
-					</div>
-					{item.subMenuOpen ? (
-						item.subMenu.map(subItem => (
-							<div
-								className='sub-menu-item'
-								key={item.id+'-sub-menu-'+subItem.id}
-							>
-								{subItem.text}
-							</div>
-						))
-					) : null}
-				</div>
+				<MenuItem
+					item={item}
+					key={item.id}
+				/>
 			))}
 		</div>
 	);
