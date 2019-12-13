@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
 
-import Img from '@/components/ui/img';
-import imageMap from '@/images/map.png';
+import {VectorMap} from 'react-jvectormap';
 
-const Transactions = ({}) => {
+const Transactions = ({transactions}) => {
+
+	const aggregatedSums = {}
+	transactions.forEach(({country, amount}) => {
+		aggregatedSums[country] = aggregatedSums[country] || 0;
+		aggregatedSums[country] += parseFloat(amount);
+	});
 	
 	return <div className='row'>
 		<div className='col col-12 col-lg-6'>
@@ -25,7 +31,7 @@ const Transactions = ({}) => {
 					</tr>
 				</thead>
 				<tbody>
-					{entries.map(entry => <tr key={entry.id}>
+					{transactions.map(entry => <tr key={entry.id}>
 						<td>
 							{entry.id}
 						</td>
@@ -44,49 +50,38 @@ const Transactions = ({}) => {
 				</tbody>
 			</table>
 		</div>
-		<div className='col col-12 col-lg-6'>
-			<Img
-				src={imageMap}
+		<div className='col col-12 col-lg-6'
+			style={{height: '300px'}}
+		>
+			<VectorMap
+				map={'world_mill'}
+				backgroundColor="#3b96ce"
+				containerStyle={{
+					width: '100%',
+					height: '100%'
+				}}
+				series={{
+				  regions: [
+					{
+					  values: aggregatedSums, //this is your data
+					  scale: ["#146804", "#ff0000"], //your color game's here
+					  normalizeFunction: "polynomial"
+					}
+				  ]
+				}}
+				containerClassName="map"
 			/>
 		</div>
 	</div>
 }
-export default Transactions;
 
-const entries = [{
-	id: 1,
-	name: 'Security doors',
-	date: '16 Jun 2014',
-	amount: '483.00',
-	status: 1,
-},{
-	id: 2,
-	name: '	Wardrobes',
-	date: '10 Jun 2014',
-	amount: '327.00',
-	status: 1,
-},{
-	id: 3,
-	name: '	Set of tools',
-	date: '12 Jun 2014',
-	amount: '125.00',
-	status: 2,
-},{
-	id: 4,
-	name: 'Panoramic pictures',
-	date: '22 Jun 2013',
-	amount: '344.00',
-	status: 1,
-},{
-	id: 5,
-	name: 'Phones',
-	date: '24 Jun 2013',
-	amount: '235.00',
-	status: 1,
-},{
-	id: 6,
-	name: 'Monitors',
-	date: '26 Jun 2013',
-	amount: '100.00',
-	status: 1,
-},];
+const mapStateToProps = ({transactions}) => {
+	return {
+		transactions,
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	{}
+)(Transactions);
